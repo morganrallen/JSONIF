@@ -13,7 +13,6 @@ function JSONIF(data, canvas) {
 		data = data[1],
 		c = canvas ? canvas : document.createElement("canvas"),
 		ctx = c.getContext("2d");
-		console.log(c);
 
 	c.height = c.style.height = header.height;
 	c.width = c.style.width = header.width;
