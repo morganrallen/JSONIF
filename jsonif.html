@@ -27,8 +27,53 @@
 						')';
 				};
 			})();
+
+			var fire = (function() {
+				var base = 100;
+
+				function rand() {
+					return base + Math.round(Math.random() * 254);
+				};
+
+				var pixels = [];
+
+				var t = false;
+				return function(x,y,c) {
+					var x = x;
+					var y = y;
+					var c = c;
+					if(!t) t = setInterval(function() {
+						for(var i = 0; i < pixels.length; i++) {
+							var p = pixels[i];
+							console.log(p);
+							if(!p.c) continue;
+
+							var f = p.c.fillStyle;
+							p.c.fillStyle = fire();
+							p.c.fillRect(p.x*c.scaler, p.y*c.scaler, c.scaler, c.scaler)
+							p.c.fillStyle = f;
+
+						}
+					}, 30);
+
+					if(x)
+						pixels.push({
+							x: x,
+							y: y,
+							c: c.ctx
+						});
+
+					return 'rgb('+
+						rand()+
+						','+
+						0+
+						','+
+						0+
+						')';
+				}
+			})();
 			var img = [
-				{ 1:'black', 2: 'blue', 3: 'yellow', 4: 'white', 5: 'red',6:grey,  height: 18, width: 10, center: {x:4.5,y:10}},
+				{ 1:'black', 2: 'blue', 3: 'yellow', 4: 'white', 5: fire,6:grey,  height: 18, width: 10, center: {x:4.5,y:10}},
 				[ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 				  0, 0, 0, 0, 1, 1, 0, 0, 0, 0,
 				  0, 0, 0, 1, 1, 1, 1, 0, 0, 0,
@@ -53,7 +98,9 @@
 	<body>
 		<canvas id="c"></canvas>
 		<script>
-			document.getElementsByTagName("body")[0].appendChild(new JSONIF(img, document.getElementById("c")));
+			document.getElementsByTagName("body")[0].appendChild(new JSONIF(img, document.getElementById("c"), {
+				scaler: 4
+			}));
 		</script>
 	</body>
 </html>
